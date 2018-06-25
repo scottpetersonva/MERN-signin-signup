@@ -35,6 +35,8 @@ class Home extends Component {
 
     this.onTextBoxChangeSignUpLastName = this.onTextBoxChangeSignUpLastName.bind(this);
 
+    // this.onTextBoxChangeEnterLink = this.onTextBoxChangeEnterLink.bind(this);
+
     this.onSignIn = this.onSignIn.bind(this)
     this.onSignUp = this.onSignUp.bind(this)
     this.logout = this.logout.bind(this)
@@ -309,6 +311,7 @@ class Home extends Component {
     return (
       <div>
         <p>Dashboard</p>
+        
         <button onClick={this.logout}>Logout</button>
       </div>
     );
