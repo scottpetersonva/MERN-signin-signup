@@ -195,6 +195,7 @@ class Home extends Component {
       })
   }
 
+
   logout() {
     this.setState({
       isLoading: true,
@@ -210,18 +211,24 @@ class Home extends Component {
           if (json.success) {
             this.setState({
               token: '',
+              signInError: '',
+              signUpError: '',
               // could also be token: token
               isLoading: false,
             })
           } else {
             this.setState({
               isLoading: false,
+              signInError: '',
+              signUpError: '',
             })
           }
         });
     } else {
       this.setState({
         isLoading: false,
+        signInError: '',
+        signUpError: '',
       })
     }
   }
@@ -248,14 +255,17 @@ class Home extends Component {
     // broke when i started adding values to the below code
     if (!token) {
       return (
-        <div>
-          <div>
+        <div className='container'>
+          <div class="row">
+            <div class="col s12">
+              <div class="card blue-grey darken-1">
+              <div class="card-content white-text">
             {
               (signInError) ? (
                 <p>{signInError}</p>
               ) : (null)
             }
-            <p>Sign In</p>
+            <span class="card-title">Sign In</span>
             <input
               type="email"
               placeholder="Email"
@@ -268,16 +278,23 @@ class Home extends Component {
               value={signInPassword}
               onChange={this.onTextBoxChangeSignInPassword} />
             <br /><br />
-            <button onClick={this.onSignIn}>Sign In</button>
+            <button className='btn' onClick={this.onSignIn}>Sign In</button>
           </div>
+          </div>
+          </div>
+          
           <br />
           <div>
+          <div class="row">
+            <div class="col s12">
+              <div class="card blue-grey darken-1">
+              <div class="card-content white-text">
             {
               (signUpError) ? (
                 <p>{signUpError}</p>
               ) : (null)
             }
-            <p>Sign Up</p>
+            <span class="card-title">Sign Up</span>
             <input
               type="text"
               placeholder="First Name"
@@ -302,8 +319,14 @@ class Home extends Component {
               value={signUpPassword}
               onChange={this.onTextBoxChangeSignUpPassword} />
             <br /><br />
-            <button onClick={this.onSignUp}>Sign Up</button>
+            <button className='btn' onClick={this.onSignUp}>Sign Up</button>
+            </div>
+            </div>
+            </div>
+            </div>
+
           </div>
+        </div>
         </div>
       )
     }

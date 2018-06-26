@@ -3,15 +3,21 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 const Header = () => (
+  
   <header>
-    <Link to="/">Home</Link>
-
+    
+    
+    
+    
     <nav>
+    <div className="container">
+    <Link to="/">Home</Link> <span> | </span>
       <Link to="/helloworld">About</Link>
-    </nav>
+      </div>
+    </nav>    
 
-    <hr />
   </header>
+
 );
 
 export default Header;
