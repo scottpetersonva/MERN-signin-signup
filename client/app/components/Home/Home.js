@@ -22,6 +22,9 @@ class Home extends Component {
       signUpLastName: '',
       signUpEmail: '',
       signUpPassword: '',
+      dashboad: '',
+      addLink: ''
+      
     };
     this.onTextBoxChangeSignInEmail = this.onTextBoxChangeSignInEmail.bind(this);
 
