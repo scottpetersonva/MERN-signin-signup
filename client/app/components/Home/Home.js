@@ -5,6 +5,9 @@ import {
   getFromStorage,
 } from '../../utils/storage';
 
+const cheerio = require("cheerio");
+const request = require("request");
+
 class Home extends Component {
   constructor(props) {
     super(props);
@@ -38,10 +41,11 @@ class Home extends Component {
 
     this.onTextBoxChangeSignUpLastName = this.onTextBoxChangeSignUpLastName.bind(this);
 
-    // this.onTextBoxChangeEnterLink = this.onTextBoxChangeEnterLink.bind(this);
+    this.onTextBoxChangeAddLink = this.onTextBoxChangeAddLink.bind(this);
 
     this.onSignIn = this.onSignIn.bind(this)
     this.onSignUp = this.onSignUp.bind(this)
+    this.addLink = this.addLink.bind(this)
     this.logout = this.logout.bind(this)
   }
 
@@ -106,6 +110,13 @@ class Home extends Component {
   onTextBoxChangeSignUpLastName(event) {
     this.setState({
       signUpLastName: event.target.value
+    });
+  }
+
+  onTextBoxChangeAddLink(event) {
+    this.setState({
+      addLink: event.target.value
+      
     });
   }
 
@@ -198,6 +209,41 @@ class Home extends Component {
       })
   }
 
+  addLink() {
+    // grab state
+    const {
+      addLink,
+    } = this.state;
+
+    // this.setState({
+    //   isLoading: true,
+    // })
+
+    // post request to backend
+    fetch('/api/account/addarticle', {
+      method: 'POST',
+      headers: {
+        'Content-Type': "application/json"
+      },
+      body: JSON.stringify({
+        link: addLink,
+      }),
+    }).then(res => res.json())
+      .then(json => {
+        console.log('json', json)
+        if (json.success) {
+          this.setState({
+            addLink: '',
+          })
+        } else {
+          this.setState({
+            // signUpError: json.message,
+            isLoading: false,
+          })
+        }
+      })
+  }
+
 
   logout() {
     this.setState({
@@ -248,6 +294,7 @@ class Home extends Component {
       signUpEmail,
       signUpPassword,
       signUpError,
+      addLink
     } = this.state;
 
     if (isLoading) {
@@ -259,16 +306,16 @@ class Home extends Component {
     if (!token) {
       return (
         <div className='container'>
-          <div class="row">
-            <div class="col s12">
-              <div class="card blue-grey darken-1">
-              <div class="card-content white-text">
+          <div className="row">
+            <div className="col s12">
+              <div className="card blue-grey darken-1">
+              <div className="card-content white-text">
             {
               (signInError) ? (
                 <p>{signInError}</p>
               ) : (null)
             }
-            <span class="card-title">Sign In</span>
+            <span className="card-title">Sign In</span>
             <input
               type="email"
               placeholder="Email"
@@ -288,16 +335,16 @@ class Home extends Component {
           
           <br />
           <div>
-          <div class="row">
-            <div class="col s12">
-              <div class="card blue-grey darken-1">
-              <div class="card-content white-text">
+          <div className="row">
+            <div className="col s12">
+              <div className="card blue-grey darken-1">
+              <div className="card-content white-text">
             {
               (signUpError) ? (
                 <p>{signUpError}</p>
               ) : (null)
             }
-            <span class="card-title">Sign Up</span>
+            <span className="card-title">Sign Up</span>
             <input
               type="text"
               placeholder="First Name"
@@ -337,7 +384,14 @@ class Home extends Component {
     return (
       <div>
         <p>Dashboard</p>
-        
+        <input
+              type="text"
+              placeholder="Add Link"
+              value={addLink}
+              onChange={this.onTextBoxChangeAddLink} />
+            <br /><br />
+            <button className='btn' onClick={this.addLink}>Sign In</button>
+            <br /><br />
         <button onClick={this.logout}>Logout</button>
       </div>
     );
