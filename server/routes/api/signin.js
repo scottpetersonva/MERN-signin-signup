@@ -240,7 +240,7 @@ module.exports = (app) => {
                 link,
             // title,
             // articleImage,
-            // uniqueId
+            uniqueId
         } = body;
         // let {
         //     email
@@ -258,7 +258,10 @@ module.exports = (app) => {
         // 2. save
 
         Articles.updateOne({
-            link: link
+            link: link,
+            // title: title,
+            // imageLink: imageLink,
+            uniqueId: uniqueId,
         },
             (err, previousUsers) => {
                 if (err) {
@@ -267,12 +270,12 @@ module.exports = (app) => {
                         message: 'Error: Server error'
                     })
                 }
-                else if (previousUsers.length > 0) {
-                    return res.send({
-                        success: false,
-                        message: 'Error: Account already exists'
-                    })
-                }
+                // else if (previousUsers.length > 0) {
+                //     return res.send({
+                //         success: false,
+                //         message: 'Error: Account already exists'
+                //     })
+                // }
 
                 // save new user
                 const newArticle = new Articles()
@@ -280,6 +283,7 @@ module.exports = (app) => {
                 newArticle.link = link;
                 // newArticle.title = title;
                 // newAticle.imageLink = imageLink;
+                newArticle.uniqueId = uniqueId
 
                 newArticle.save((err, user) => {
                     if (err) {

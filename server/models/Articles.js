@@ -12,6 +12,10 @@ const ArticlesSchema = new mongoose.Schema({
   link: {
     type: String,
     default: ''  
+  },
+  uniqueId: {
+    type: String,
+    default: ''  
   }
 });
 

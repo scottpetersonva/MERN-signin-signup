@@ -5,8 +5,8 @@ import {
   getFromStorage,
 } from '../../utils/storage';
 
-const cheerio = require("cheerio");
-const request = require("request");
+// const cheerio = require("cheerio");
+// const request = require("request");
 
 class Home extends Component {
   constructor(props) {
@@ -27,7 +27,7 @@ class Home extends Component {
       signUpPassword: '',
       dashboad: '',
       addLink: ''
-      
+
     };
     this.onTextBoxChangeSignInEmail = this.onTextBoxChangeSignInEmail.bind(this);
 
@@ -116,7 +116,7 @@ class Home extends Component {
   onTextBoxChangeAddLink(event) {
     this.setState({
       addLink: event.target.value
-      
+
     });
   }
 
@@ -213,6 +213,7 @@ class Home extends Component {
     // grab state
     const {
       addLink,
+      token,
     } = this.state;
 
     // this.setState({
@@ -225,12 +226,16 @@ class Home extends Component {
       headers: {
         'Content-Type': "application/json"
       },
+
       body: JSON.stringify({
         link: addLink,
+        uniqueId: token
       }),
     }).then(res => res.json())
       .then(json => {
         console.log('json', json)
+        // this is the unique session id. can this be used to find the unique user id? do i need to find that directly?
+        console.log('token', token)
         if (json.success) {
           this.setState({
             addLink: '',
@@ -294,7 +299,8 @@ class Home extends Component {
       signUpEmail,
       signUpPassword,
       signUpError,
-      addLink
+      addLink,
+      uniqueId
     } = this.state;
 
     if (isLoading) {
@@ -309,91 +315,103 @@ class Home extends Component {
           <div className="row">
             <div className="col s12">
               <div className="card blue-grey darken-1">
-              <div className="card-content white-text">
-            {
-              (signInError) ? (
-                <p>{signInError}</p>
-              ) : (null)
-            }
-            <span className="card-title">Sign In</span>
-            <input
-              type="email"
-              placeholder="Email"
-              value={signInEmail}
-              onChange={this.onTextBoxChangeSignInEmail} />
-            <br /><br />
-            <input
-              type="password"
-              placeholder="Password"
-              value={signInPassword}
-              onChange={this.onTextBoxChangeSignInPassword} />
-            <br /><br />
-            <button className='btn' onClick={this.onSignIn}>Sign In</button>
-          </div>
-          </div>
-          </div>
-          
-          <br />
-          <div>
-          <div className="row">
-            <div className="col s12">
-              <div className="card blue-grey darken-1">
-              <div className="card-content white-text">
-            {
-              (signUpError) ? (
-                <p>{signUpError}</p>
-              ) : (null)
-            }
-            <span className="card-title">Sign Up</span>
-            <input
-              type="text"
-              placeholder="First Name"
-              value={signUpFirstName}
-              onChange={this.onTextBoxChangeSignUpFirstName} />
-            <br /><br />
-            <input
-              type="text"
-              placeholder="Last Name"
-              value={signUpLastName}
-              onChange={this.onTextBoxChangeSignUpLastName} />
-            <br /><br />
-            <input
-              type="email"
-              placeholder="Email"
-              value={signUpEmail}
-              onChange={this.onTextBoxChangeSignUpEmail} />
-            <br /><br />
-            <input
-              type="password"
-              placeholder="Password"
-              value={signUpPassword}
-              onChange={this.onTextBoxChangeSignUpPassword} />
-            <br /><br />
-            <button className='btn' onClick={this.onSignUp}>Sign Up</button>
-            </div>
-            </div>
-            </div>
+                <div className="card-content white-text">
+                  {
+                    (signInError) ? (
+                      <p>{signInError}</p>
+                    ) : (null)
+                  }
+                  <span className="card-title">Sign In</span>
+                  <input
+                    type="email"
+                    placeholder="Email"
+                    value={signInEmail}
+                    onChange={this.onTextBoxChangeSignInEmail} />
+                  <br /><br />
+                  <input
+                    type="password"
+                    placeholder="Password"
+                    value={signInPassword}
+                    onChange={this.onTextBoxChangeSignInPassword} />
+                  <br /><br />
+                  <button className='btn' onClick={this.onSignIn}>Sign In</button>
+                </div>
+              </div>
             </div>
 
+            <br />
+            <div>
+              <div className="row">
+                <div className="col s12">
+                  <div className="card blue-grey darken-1">
+                    <div className="card-content white-text">
+                      {
+                        (signUpError) ? (
+                          <p>{signUpError}</p>
+                        ) : (null)
+                      }
+                      <span className="card-title">Sign Up</span>
+                      <input
+                        type="text"
+                        placeholder="First Name"
+                        value={signUpFirstName}
+                        onChange={this.onTextBoxChangeSignUpFirstName} />
+                      <br /><br />
+                      <input
+                        type="text"
+                        placeholder="Last Name"
+                        value={signUpLastName}
+                        onChange={this.onTextBoxChangeSignUpLastName} />
+                      <br /><br />
+                      <input
+                        type="email"
+                        placeholder="Email"
+                        value={signUpEmail}
+                        onChange={this.onTextBoxChangeSignUpEmail} />
+                      <br /><br />
+                      <input
+                        type="password"
+                        placeholder="Password"
+                        value={signUpPassword}
+                        onChange={this.onTextBoxChangeSignUpPassword} />
+                      <br /><br />
+                      <button className='btn' onClick={this.onSignUp}>Sign Up</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
           </div>
-        </div>
         </div>
       )
     }
 
     return (
-      <div>
-        <p>Dashboard</p>
-        <input
-              type="text"
-              placeholder="Add Link"
-              value={addLink}
-              onChange={this.onTextBoxChangeAddLink} />
-            <br /><br />
-            <button className='btn' onClick={this.addLink}>Sign In</button>
-            <br /><br />
-        <button onClick={this.logout}>Logout</button>
+
+      <div className='container'>
+        <h1 className='center-align'>Dashboard</h1>
+        <div className="row">
+          <div className="col s12">
+            <div className="card blue-grey darken-1">
+              <div className="card-content white-text">
+                <span className="card-title">Add an Article</span>
+
+                <input
+                  type="text"
+                  placeholder="Add Link"
+                  value={addLink}
+                  onChange={this.onTextBoxChangeAddLink} />
+                <br /><br />
+                <button className='btn' onClick={this.addLink}>Save Article</button>
+                <br /><br />
+              </div>
+            </div>
+          </div>
+        </div>
+        <button className='btn' onClick={this.logout}>Logout</button>
       </div>
+
     );
   }
 }
